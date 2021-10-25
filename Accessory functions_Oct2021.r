@@ -88,10 +88,6 @@ non_binned<-function(sites_ages,PAtable,method=method){
       source("http://bio.mq.edu.au/~jalroy/Forbes.R")
       results[[i]]<-as.dist(1-forbesMatrix(PAtable_temp,corrected=TRUE))
     }
-    if(method=="Betamulti"){
-      library(betapart)
-      results[[i]]<-beta.multi(PAtable_temp)
-    }
     if(method=="Betapair"){
       library(betapart)
       results[[i]]<-beta.pair(PAtable_temp)
@@ -100,15 +96,11 @@ non_binned<-function(sites_ages,PAtable,method=method){
   if(method=="NA"){
     results_new<-results
   }
-  if(method=="Betamulti"){
-    names(results)<-ages
-    results_new<-Summarize.beta.part(results,method="Betamulti")
-  }
   if(method=="Betapair"){
     names(results)<-ages
     results_new<-Summarize.beta.part(results,method="Betapair")
   }
-  if(method!="Betapair"& method!="NA" & method!="Betamulti"){
+  if(method!="Betapair"& method!="NA"){
     names(results)<-ages[2:(length(results)+1)]
     results_new<-Summarize.mega.beta(results)
   }
@@ -150,10 +142,6 @@ Binned<-function(age_bins,PAtable,sites_ages,method=method,calcmean=calcmean){
         source("http://bio.mq.edu.au/~jalroy/Forbes.R")
         results[[i]]<-as.dist(1-forbesMatrix(PAtable_temp,corrected=TRUE))# I do not know if this is working correctly
       }
-      if(method=="Betamulti"){
-        library(betapart)
-        results[[i]]<-beta.multi(PAtable_temp)
-      }
       if(method=="Betapair"){
         library(betapart)
         results[[i]]<-beta.pair(PAtable_temp)
@@ -163,19 +151,15 @@ Binned<-function(age_bins,PAtable,sites_ages,method=method,calcmean=calcmean){
   if(method=="NA"){
     results_new<-results
     }
-  if(method=="Betamulti"){
-    names(results)<-ages[2:(length(results)+1)]
-    results_new<-Summarize.beta.part(results,method="Betamulti")
-  }
   if(method=="Betapair"){
     names(results)<-ages[2:(length(results)+1)]
     results_new<-Summarize.beta.part(results,method="Betapair")
   }
-  if(method!="Betapair"& method!="NA" & method!="Betamulti" & calcmean=="TRUE"){
+  if(method!="Betapair"& method!="NA" & calcmean=="TRUE"){
     names(results)<-ages[2:(length(results)+1)]
     results_new<-Summarize.mega.beta(results)
   }
-  if(method!="Betapair"& method!="NA" & method!="Betamulti" & calcmean=="FALSE"){
+  if(method!="Betapair"& method!="NA" & calcmean=="FALSE"){
     names(results)<-ages[2:(length(results)+1)]
     results_new<-results
   }
@@ -254,13 +238,6 @@ Calculate.extents<-function(PAtable,age_bins,sites_ages,latlongs,binned=c("TRUE"
 Summarize.beta.part<-function(results_object,method=method){
   summary_object<-matrix(nrow=length(results_object),ncol=7)
   summary_object[,1]<-names(results_object)
-  if(method=="Betamulti"){
-    for(i in 1:length(results_object)){
-      summary_object[i,2]<-results_object[[i]][[1]]
-      summary_object[i,3]<-results_object[[i]][[2]]
-      summary_object[i,4]<-results_object[[i]][[3]]
-    }
-  }
   if(method=="Betapair"){
     for(i in 1:length(results_object)){
       summary_object[i,2]<-mean(results_object[[i]][[1]])
@@ -593,10 +570,6 @@ metrics_only<-function(PAtable,method=method){
   if(method=="Forbes"){
     source("http://bio.mq.edu.au/~jalroy/Forbes.R")
     results_dist<-as.dist(1-forbesMatrix(PAtable,corrected=TRUE))
-  }
-  if(method=="Betamulti"){
-    library(betapart)
-    results_dist<-beta.multi(PAtable)
   }
   if(method=="Betapair"){
     library(betapart)

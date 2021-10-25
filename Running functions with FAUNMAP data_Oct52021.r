@@ -545,7 +545,6 @@ colnames(df2)<-c("Age","All","Allse",
                  "Null","Lower","Upper")
 
 
-
 library(ggplot2)
 ggplot(df2, aes(x=Age,y=All))+
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),legend.position="none")+
@@ -609,11 +608,9 @@ Sor<-Mega.beta.diversity(PAtable=PAtable,sites_ages=sites_ages,age_bins=age_bins
 
 Forb<-Mega.beta.diversity(PAtable=PAtable,sites_ages=sites_ages,age_bins=age_bins,latlongs=latlongs,method="Forbes",calcmean = "TRUE")
 
-Dispersio<-Mega.beta.diversity(PAtable=PAtable,sites_ages=sites_ages,age_bins=age_bins,latlongs=latlongs,method="Betadisper",calcmean = "TRUE")
+Dispersion<-Mega.beta.diversity(PAtable=PAtable,sites_ages=sites_ages,age_bins=age_bins,latlongs=latlongs,method="Betadisper",calcmean = "TRUE")
 
 DDecay<-Mega.beta.diversity(PAtable=PAtable,sites_ages=sites_ages,age_bins=age_bins,latlongs=latlongs,method="DistDecay",calcmean = "TRUE")
-
-# Just remove betamulti from the functionality
 
 #######Calculating values for Figure S3#####################################################################################################
 #########################################################################################################################
@@ -695,9 +692,7 @@ summary(model2)
 
 
 mam<-read.csv("Complete PAtable_new.csv", header = TRUE, row.names = 1)
-
 mam2<-t(mam)
-
 mam.mat<-as.matrix(mam2)
 
 age<-read.csv("absolutef_all.csv", header = TRUE)
@@ -706,14 +701,11 @@ latlong<-read.csv("Complete latlongs.csv", header = TRUE)
 
 age$time.bins <- cut(age$timeybp, breaks=c(0,500,11600,20000,300000), labels=c("Modern", "Holocene", "Late_Glacial","Full_Glacial"))
 
-
 time.bins<-unique(age$time.bins)
-#time.bins<-order(time.bins, levels = c("Modern", "Holocene", "Full_Glacial", "Late_Glacial"))
 my.order<-c("Modern", "Holocene", "Full_Glacial", "Late_Glacial")
-#area_sqkm<-list()
 
-library(sp) #makes the convex hull
-library(raster) #only if you use the function "area"
+library(sp)
+library(raster)
 
 spec_results<-matrix(nrow=nrow(mam.mat),ncol=4) #to put results in
 rownames(spec_results)<-rownames(mam.mat) 
@@ -729,7 +721,7 @@ for(i in 1:num){
   spec_poly<-list()
   coord.result<-list()
   print(i)
-  df<-data.frame(x=mam.mat[i,], sitekey=site)# one of the genera
+  df<-data.frame(x=mam.mat[i,], sitekey=site)
   df.1<-subset(df, x==1)
   new<-merge(df.1, latlong, by="sitekey")
   new.1<-merge(new, age, by="sitekey")
@@ -738,7 +730,7 @@ for(i in 1:num){
     period<-subset(new.1, time.bins==levels(time.bins)[k])
     if(nrow(period)==0){
       spec_results[i,k]<-"NA"
-      next #tells R to just move on to the next loop
+      next 
     }else{
       coordinates<-data.frame(x=period$longitude,y=period$latitude)
       ch <- chull(x=coordinates$x, y=coordinates$y)
@@ -806,7 +798,6 @@ PAtable<-t(PAtable)
 maxi<-max(sites_ages$timeybp)
 mani<-min(sites_ages$timeybp)
 
-# These are placeholders used for plotting but the date ranges are changed appropriately when plotting
 age_bins<-seq(from=0,to=maxi,by=5000)
 age_bins<-c(100,age_bins)
 
@@ -816,8 +807,8 @@ sites$time.bins <- cut(sites$timeybp, breaks=c(0,25,5000,10000,15000,20000,25000
 age.label<-unique(sites$time.bins)
 num.age<-length(unique(sites$time.bins))
 
-library(sp) #makes the convex hull
-library(raster) #only if you use the function "area"
+library(sp) 
+library(raster)
 library("mapdata")
 library("maps")
 library(ggplot2)
@@ -845,7 +836,6 @@ for(i in 1:num.age){
   print(p)
   dev.off()
 }
-
 
 
 ##########################################################################################################################
