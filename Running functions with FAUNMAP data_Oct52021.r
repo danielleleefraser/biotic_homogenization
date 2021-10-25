@@ -143,6 +143,7 @@ PAtable<-PAtable[,matches]
 sites_ages<-sites_ages[matches,]
 
 # Jaccard dissimilarity
+#No alaska is a shorthand here, there are sites that are removed from other places north of the CAD border (e.g., Alberta)
 Jaccard_noalaska<-Mega.beta.diversity(PAtable=PAtable,sites_ages=sites_ages,age_bins=age_bins,latlongs=latlongs,method="Jaccard",calcmean="TRUE")
 Jaccard_noalaska[[1]][,3]<-as.numeric(Jaccard_noalaska[[1]][,3])/sqrt(as.numeric(Jaccard_noalaska[[2]][,2]))
 
