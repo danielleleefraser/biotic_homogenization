@@ -127,10 +127,9 @@ Binned<-function(age_bins,PAtable,sites_ages,method=method,calcmean=calcmean){
     print(i)
     upper<-ages[i+1] 
     lower<-ages[i]
-    sites_age_new<-sites_ages[sites_ages$timeybp<=upper,]# this is where it's fucking up
+    sites_age_new<-sites_ages[sites_ages$timeybp<=upper,]
     sites_age_new<-sites_age_new[sites_age_new$timeybp>lower,]
     if(nrow(sites_age_new)<2){
-      #ages<-ages[1:(length(ages)-1)]# what the heck does this line do?
       results[[i]]<-"NA" #next
       next
     }
@@ -1066,7 +1065,7 @@ Occupancy_grid<-function(PAtable,age_bins,sites_ages,latlongs,calcmeans=c("TRUE"
   library(maptools)
   library(sp)
   library(raster)
-  library(SDMTools)
+  #library(SDMTools)
   data(wrld_simpl)
   world <- crop(wrld_simpl, extent(-170, -15, -60, 90))
   behrmannCRS <- CRS("+proj=cea +lat_ts=30")
@@ -1145,7 +1144,7 @@ Null_rangeGrid<-function(PAtable,age_bins,sites_ages,latlongs,niter,calcmeans=c(
   library(maptools)
   library(sp)
   library(raster)
-  library(SDMTools)
+  #library(SDMTools)
   data(wrld_simpl)
   world <- crop(wrld_simpl, extent(-170, -15, -60, 90))
   behrmannCRS <- CRS("+proj=cea +lat_ts=30")
