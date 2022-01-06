@@ -1,4 +1,4 @@
-Mega.beta.diversity<-function(PAtable,sites_ages,age_bins,latlongs,method=c("Sorensen","Jaccard","Forbes","Betadisper","DistDecay","Betapair"),calcmean=c("TRUE","FALSE")){
+Mega.beta.diversity<-function(PAtable,sites_ages,age_bins,latlongs,method=c("Sorensen","Jaccard","Forbes","Betadisper","DistDecay","Betapair","ABC"),calcmean=c("TRUE","FALSE")){
   library(vegan)
   if(method!="Betadisper" & method!="DistDecay"){
     if(missing(age_bins)){

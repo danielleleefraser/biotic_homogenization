@@ -140,11 +140,14 @@ Binned<-function(age_bins,PAtable,sites_ages,method=method,calcmean=calcmean){
       }
       if(method=="Forbes"){
         source("http://bio.mq.edu.au/~jalroy/Forbes.R")
-        results[[i]]<-as.dist(1-forbesMatrix(PAtable_temp,corrected=TRUE))# I do not know if this is working correctly
+        results[[i]]<-as.dist(forbesMatrix(PAtable_temp,corrected=TRUE))
       }
       if(method=="Betapair"){
         library(betapart)
         results[[i]]<-beta.pair(PAtable_temp)
+      }
+      if(method=="ABC"){
+        results[[i]]<-ABCMatrix(PAtable_temp)
       }
     }
   }
@@ -1298,6 +1301,24 @@ Climate_PCA_turnover<-function(sites_ages,age_bins,PCA_results){
       results[i,4]<-sd(temp13)/sqrt(length(temp13))
       
     }
+  }
+  return(results)
+}
+
+
+Climate_PCA_turnover_hiRes<-function(PCA_results){
+  ages<-PCA_results[,1] # the first column
+  unique_ages<-unique(ages)
+  results<-matrix(nrow=length(unique_ages),ncol=4) # length of the unique names
+  results<-cbind(unique_ages,results)
+  for(i in 1:length(unique_ages)){ # subset by each date
+    PCA_results_temp<-PCA_results[PCA_results$Age==unique_ages[i],]
+    temp12<-dist(PCA_results_temp[,2],method="euclidean")
+    results[i,2]<-mean(temp12)
+    results[i,3]<-sd(temp12)/sqrt(length(temp12))
+    temp13<-dist(PCA_results_temp[,3],method="euclidean")
+    results[i,4]<-mean(temp13)
+    results[i,5]<-sd(temp13)/sqrt(length(temp13))
   }
   return(results)
 }
